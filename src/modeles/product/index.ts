@@ -1,4 +1,4 @@
-import mongoose, { Connection, Document } from "mongoose";
+import mongoose, {Document, model } from "mongoose";
 const { ObjectId } = mongoose.Schema.Types;
 export interface IProduct extends Document {
   name: string;
@@ -23,12 +23,11 @@ const Product = new mongoose.Schema(
     },
 },
   {
-    timestamps: { createdAt: "createdOn", updatedAt: "modifiedOn" },
+    timestamps: true
   }
 );
 
-export const productModel = (db: Connection) => {
-  return db.model<IProduct>("product", Product);
-};
+const productModel = model<IProduct>('product', Product);
+export default productModel;
 
-module.exports = { productModel };
+

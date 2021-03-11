@@ -2,8 +2,9 @@ import   {DB, PORT, MODE } from './config'
 import express, {Application, Response, Request, NextFunction} from 'express'
 const app:Application = express()
 import { ApolloServer } from "apollo-server-express";
-// import { schema } from './schema'
+import mongoose from "mongoose";
 import { typeDefs, resolvers } from './schema'
+import * as AppModels from './modeles'
 import bodyParser from "body-parser";
 import cors from "cors";
 app.use(cors());
@@ -22,11 +23,19 @@ const server = new ApolloServer({
     context: ({ req }) => {
       return {
         req,
-        // ...AppModels,
+        ...AppModels,
+        resolvers,
       };
     },
   });
   
+  const startApp = async () => {
+  await mongoose.connect(`${DB}`, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  });
+
 app.listen(PORT, ()=>{
     try {
         server.applyMiddleware({
@@ -38,4 +47,6 @@ app.listen(PORT, ()=>{
         
     }
 })
+  }
 
+  startApp();

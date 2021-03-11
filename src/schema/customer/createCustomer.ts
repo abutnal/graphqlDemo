@@ -8,11 +8,13 @@ export const createCustomerTypeDefs =  gql`
     input CustomerInput {
         firstName: String!
         lastName: String!
+        email:String!
     }
     type Customer {
         id: ID!
         firstName: String!
         lastName: String!
+        email:String!
        
     }
 `;
@@ -22,7 +24,9 @@ export const createCustomerResolvers = {
         [CREATE_CUSTOMER]: async ( _:any, args:any, context:any, info:any ) => {
             try {
                 const { input } = args
-                return input
+                const { customerModel } = context
+                let result = await customerModel.create(input);
+                return result
               
             } catch (error) {
                 throw new ApolloError(error);

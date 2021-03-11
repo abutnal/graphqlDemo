@@ -12,6 +12,7 @@ export const createProductTypeDefs = gql `
   }
 
   type Product{
+      id:ID!
       name:String!
       price:Float!
       qty:Int!
@@ -23,8 +24,9 @@ export const createProductResolvers = {
         [CREATE_PRODUCT]: async ( _:any, args:any, context:any, info:any ) => {
             try {
                 const { input } = args
-                return input
-              
+                const { productModel} = context
+                const result = await productModel.create(input)
+                return result
             } catch (error) {
                 throw new ApolloError(error);
             }

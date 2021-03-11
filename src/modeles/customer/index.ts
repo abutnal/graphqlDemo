@@ -1,11 +1,10 @@
-import mongoose, { Connection, Document } from "mongoose";
+import mongoose, { Connection, Document, model } from "mongoose";
 const { ObjectId } = mongoose.Schema.Types;
 export interface ICustomer extends Document {
   firstName: string;
   lastName: string;
   email: string;
 }
-
 const Customer = new mongoose.Schema(
   {
     firstName: {
@@ -23,12 +22,10 @@ const Customer = new mongoose.Schema(
     },
 },
   {
-    timestamps: { createdAt: "createdOn", updatedAt: "modifiedOn" },
+      timestamps: true
   }
 );
 
-export const customerModel = (db: Connection) => {
-  return db.model<ICustomer>("customer", Customer);
-};
+const customerModel = model<ICustomer>('customer', Customer);
+export default customerModel;
 
-module.exports = { customerModel };
